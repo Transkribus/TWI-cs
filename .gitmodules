@@ -1,0 +1,3 @@
+[submodule "apps/utils"]
+	path = apps/utils
+	url = https://github.com/Transkribus/TWI-utils.git
