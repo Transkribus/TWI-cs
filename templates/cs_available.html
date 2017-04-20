@@ -1,0 +1,11 @@
+{% extends "navi_base.html" %}
+{% load i18n %}
+
+{% block content %}
+
+<p>I'm free</p>
+{% for cs in cs_list %}
+    {{cs.collection_id}}: {{cs.cs_flag}}<br/>
+{% endfor %}
+
+{% endblock content %}

@@ -1,0 +1,90 @@
+{% load staticfiles %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>READ Web UI</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="{{ "bootstrap_css"|load_lib }}" rel="stylesheet"/>
+    <!-- FancyTree CSS -->
+<!--    <link href="{% static "css/ui.fancytree.css" %}" rel="stylesheet"/> -->
+    <!-- Local CSS -->
+    <!-- styles from utils -->
+    <link href="{% static "css/read.css" %}" rel="stylesheet"/>
+    <!-- styles from project -->
+    <link href="{% static "css/cs.css" %}" rel="stylesheet"/>
+
+
+<!--
+    <link href="{{ "datatables_css"|load_lib  }}" rel="stylesheet"/>
+    <link href="{{ "jquery_ui_css"|load_lib  }}" rel="stylesheet"/>
+-->
+    <!-- jQuery -->
+    <script src="{{ "jquery"|load_lib }}"></script>
+    <script src="{{ "jquery_ui"|load_lib }}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{% static "js/bootstrap.min.js" %}"></script>
+    <!-- Data tables -->
+    <script src="{{ "datatables_js"|load_lib }}"></script>
+    <!-- Local JS -->
+	<script language="javascript">
+		var static_url = "{{ STATIC_URL|escapejs }}";
+		var current_userid = "{{ user.tsdata.userId }}";
+	</script>
+    <script src="{% static "js/read.js" %}"></script>
+
+    {%comment%}  apphead == appname+'/extra_head.html' so if the app has an 
+	extra_head.html template they can include code for <head></head>,
+	deftaults to empty file in projecy template
+    {%endcomment%}
+	{% include apphead %}
+
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-static-top" id="ts-top-nav">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#ts-menu" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Transkribus-web</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="ts-menu">
+      <ul class="nav navbar-nav">
+        <li><a href="http://127.0.0.1:8003">My Collections</a></li>
+        <li><a href="http://127.0.0.1:8004">Published collections</a></li>
+        <li><a href="http://127.0.0.1:8005">Transcription training</a></li>
+        <li class="active"><a href="/">Crowd-sourcing <span class="sr-only">(current)</span></a></li>
+      </ul>
+    </div>	
+  </div>
+</nav>
+
+    {% block body_content %}{% endblock %}
+
+<footer>
+	<div class="row">
+		<div class="col-lg-12">
+		    <a href="http://transkribus.eu"><img style="float:left;height:25px;" src="//transkribus.eu/Transkribus/img/read_135x135.png"></a>
+		    <img style="float:left;height:25px;" src="//transkribus.eu/Transkribus/img/jaune.jpg">
+		    <p>{% trans "Transkribus is part of the "%}<a href="http://read.transkribus.eu/" target="_blank">{% trans "READ project"%}</a>{% trans " and has received funding from the European Union’s Horizon 2020 Research and Innovation programme under grant agreement no. 674943." %}</p>
+		</div>
+	</div>
+</footer>
+</body>
+</html>
