@@ -61,12 +61,12 @@ INSTALLED_APPS = [
 #project app
     'cs',
 #READ apps
-#    'apps.utils',
+    'apps.utils',
 #    'apps.library',
 #    'apps.dashboard',
 #    'apps.edit',
 #    'apps.search',
-#    'apps.navigation'
+    'apps.navigation'
 ]
 
 MIDDLEWARE_CLASSES = [
