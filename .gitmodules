@@ -10,3 +10,6 @@
 [submodule "apps/querystring_parser"]
 	path = apps/querystring_parser
 	url = https://github.com/bernii/querystring-parser.git
+[submodule "apps/edit"]
+	path = apps/edit
+	url = https://github.com/Transkribus/TWI-edit.git

@@ -43,6 +43,10 @@
 		var current_userid = "{{ user.tsdata.userId }}";
 	</script>
     <script src="{% static "js/read.js" %}"></script>
+	<!-- TODO make a crowd sub app with an extra_head.html template for this -->
+    <script src="{% static "js/crowd.js" %}"></script>
+    <script src="{% static "js/jquery.gauge.js" %}"></script>
+
 
     {%comment%}  apphead == appname+'/extra_head.html' so if the app has an 
 	extra_head.html template they can include code for <head></head>,

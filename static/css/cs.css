@@ -69,3 +69,7 @@
   }
 }
 
+a.cs-subscribed { border-width: medium; border-color: green; text-decoration: none;}
+a.cs-subscribed:hover { text-decoration: none;}
+a.cs-subscribed div.thumb_label{ text-decoration: none; color: #000; font-weight: bold; text-align: center; }
+.cs-thumb-div { text-align: center; }

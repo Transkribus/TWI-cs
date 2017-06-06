@@ -24,7 +24,16 @@ urlpatterns = [
     url(r'^$', cs.views.index, name='index'),
     url(r'^about$', cs.views.about, name='about'),
 
+    url(r'^([0-9]+)$', cs.views.collection, name='collection'),
+    url(r'^([0-9]+)/([0-9]+)$', cs.views.document, name='document'),
+
+
+    url(r'^utils/', include('apps.utils.urls', app_name='utils', namespace='utils')),
+    url(r'^edit/', include('apps.edit.urls', app_name='edit', namespace='edit')),
+
+
+    url(r'^register/([0-9]+)$', cs.views.register, name='register'),
+    #url(r'^login/$', cs.views.login, name='login'),
     url('', include('django.contrib.auth.urls')),
-    url(r'^register$', apps.utils.views.register, name='register'),
     url(r'^admin/', admin.site.urls),
 ]

@@ -1,0 +1,17 @@
+{% extends "navi_base.html" %}
+{% load i18n %}
+
+{% block content %}
+{{combidata}}
+<h2>{{collection.colName}}</h2>
+<p>{{collection.description}}</p>
+<div class="container">
+	<div class="row-fluid" id="documents">
+	{% for doc in documents %}
+	    <div class="col-md-2" data-colid="{{collection.colId}}" data-docid="{{doc.docId}}" style="text-align: center;"><canvas id="gauge_{{doc.docId}}" width="100" height="100" data-lines="{{doc.docStat.nrOfTranscribedLines}}" data-words="{{doc.docStat.nrOfWords}}"></canvas>
+<a href="{% url 'edit:correct' collection.colId doc.docId '1' %}" class="thumbnail"><div class="thumb_label">{{doc.title}}</div></a></div>
+	{% endfor %}
+	</div>
+</div>
+
+{% endblock content %}

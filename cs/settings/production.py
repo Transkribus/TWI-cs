@@ -64,7 +64,7 @@ INSTALLED_APPS = [
     'apps.utils',
 #    'apps.library',
 #    'apps.dashboard',
-#    'apps.edit',
+    'apps.edit',
 #    'apps.search',
     'apps.navigation'
 ]
@@ -229,7 +229,7 @@ NOCAPTCHA = True
 LOGIN_URL = 'login'
 
 #Where to on login if no next param available?
-LOGIN_REDIRECT_URL = '/dashboard'
+LOGIN_REDIRECT_URL = '/'
 
 #Default for size of paged data
 PAGE_SIZE_DEFAULT = 5

@@ -30,3 +30,6 @@ LOGGING = {
 
 # Where to serve the static files from (ie not /readTest/static/)
 STATIC_URL = '/static/'
+
+#TRP_URL = 'https://transkribus.eu/TrpServerTesting/rest/'
+
