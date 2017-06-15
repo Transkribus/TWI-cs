@@ -211,8 +211,8 @@ STATICFILES_FINDERS = (
 STATIC_ROOT =  'collected_static'
 MEDIA_ROOT = 'media' #not currently used
 #Step 4 Finally we tell django how to serve the static files
-STATIC_URL = '/readTest/static/'
-MEDIA_URL = '/readTest/media/' #not currently used
+STATIC_URL = '/crowd/static/'
+MEDIA_URL = '/crowd/media/' #not currently used
 
 ##################### Added for READ ###################
 
