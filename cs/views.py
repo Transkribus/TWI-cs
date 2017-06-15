@@ -20,22 +20,28 @@ def index(request):
 #
 #    cs = CSProject.objects.filter(cs_flag=True).values()
 
-    cs = t_crowdsourcing(request)
+#    t = request.user.tsdata.t 
+    t = TranskribusSession()
+
+    collections = t.collections(request)
+
+    cs = t.crowdsourcing(request)
+
     if isinstance(cs,HttpResponse):
         return cs
 
-#    docStat = t_docStat(request, {'collId': collId, 'docId': docId})
+#    docStat = t.docStat(request, {'collId': collId, 'docId': docId})
 
 
     t_log('c-source %s' % cs, logging.WARN)
     if request.user.is_authenticated() : 
-        collections = t_collections(request)
+        collections = t.collections(request)
         if isinstance(collections,HttpResponse):
             return collections
 
         t_log('collections %s' % collections, logging.WARN)
         for f in cs :
-            f['colStat'] =  t_collStat(request, {'collId': f.get('colId')})
+            f['colStat'] =  t.collStat(request, {'collId': f.get('colId')})
             for c in collections :
                 if f.get('colId') == c.get('colId'):
                     f['subscribed'] = 1
@@ -51,7 +57,7 @@ def collection(request,collId):
 #    t_log('cs %s' % cs, logging.WARN)
 
     #Avoid this sort of nonsense if possible
-    collections = t_collections(request,{'end':None,'start':None})
+    collections = t.collections(request,{'end':None,'start':None})
     if isinstance(collections,HttpResponse):
         return collections
 
@@ -60,21 +66,21 @@ def collection(request,collId):
     collection = navdata.get("focus")
     pagedata = {'collection': collection}
 
-    t_log('USER: %s' % request.user.tsdata, logging.WARN)
+#    t_log('USER: %s' % request.user.tsdata, logging.WARN)
 
-    documents = t_collection(request,{'collId' : collId})
+    documents = t.collection(request,{'collId' : collId})
     if isinstance(documents,HttpResponse):
         return documents
 
     t_log('DOCS:: %s' % documents, logging.WARN)
 
     for d in documents :
-        d['docStat'] =  t_docStat(request, {'collId': collId, 'docId': d.get('docId')})
+        d['docStat'] =  t.docStat(request, {'collId': collId, 'docId': d.get('docId')})
 
 #    cs = t_crowdsourcing_unsubscribe(request,{'collId' : collId})
     #TODO  catch status code from this
     #TODO don;t call when not needed (ie logged in an user is subscribed... though calling this may be the easiest way)
-    t_crowdsourcing_subscribe(request,{'collId' : collId})
+    t.crowdsourcing_subscribe(request,{'collId' : collId})
    # if isinstance(cs,HttpResponse):
     #    return cs
 #    t_log('c-source %s' % c_source, logging.WARN)
