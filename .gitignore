@@ -3,4 +3,5 @@ cs/settings/development.py
 cs/settings/local.py
 *__pycache__*
 tmp/db.sqlite3
+cs/migrations
 collected_static
