@@ -2,16 +2,70 @@
 {% load i18n %}
 
 {% block content %}
-{{combidata}}
-<h2>{{collection.colName}}</h2>
-<p>{{collection.description}}</p>
-<div class="container">
-	<div class="row-fluid" id="documents">
-	{% for doc in documents %}
-	    <div class="col-md-2" data-colid="{{collection.colId}}" data-docid="{{doc.docId}}" style="text-align: center;"><canvas id="gauge_{{doc.docId}}" width="100" height="100" data-lines="{{doc.docStat.nrOfTranscribedLines}}" data-words="{{doc.docStat.nrOfWords}}"></canvas>
-<a href="{% url 'edit:correct' collection.colId doc.docId '1' %}" class="thumbnail"><div class="thumb_label">{{doc.title}}</div></a></div>
-	{% endfor %}
+
+<div class="container read-container">
+	<div class="row col-md-12">
+		<h2>{{collection.colName}}</h2>
+	</div>
+	<div class="row col-md-8">
+		<div class="row col-md-6">
+			<div class="inner">
+			{% if user.is_authenticated %}
+			<!--	<img src="{{collection.main_image}}" style="float: left;"/> -->
+				<img src="/static/images/wolpertinger.jpg"/>
+
+			{% else %}
+				<img src="/static/images/wolpertinger.jpg"/>
+			{% endif %}
+			</div>
+		</div>
+		<div class="row col-md-6">
+			<div class="inner">
+				<p>{{collection.description}}</p>
+				{% if not user.is_authenticated %}
+					<a href="{% url 'login' %}?next={{request.path}}">Login or Register to contribute to this project</a>
+				{% endif %}
+				
+				<h4>Project schedule</h4>
+				<b>Milestone - Project start: 27th May 2017</b>
+				<p>Suspendisse sagittis, tortor id tempus sodales, justo mi efficitur leo, in sollicitudin mauris massa in dolor. Maecenas arcu eros, consectetur et augue at, gravida consequat enim. Etiam ultricies ex enim, eu vulputate diam placerat ut. Morbi elit nibh, auctor nec metus consequat, laoreet pretium lacus.</p>
+				 <b>Milestone - transcription complete: 30th June 2017</b>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget eros at odio pretium pharetra a id ligula. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aenean volutpat, nisi quis feugiat feugiat, enim augue pharetra nisi, gravida lacinia ante risus tempor augue.</p>
+				
+			</div>
+		</div>
+	</div>
+	<div class="row col-md-4">
+		<div class="inner">
+			<h4>Project News</h4>
+			 <b>Milstone - transcription complete: 30th June 2017</b>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget eros at odio pretium pharetra a id ligula. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aenean volutpat, nisi quis feugiat feugiat, enim augue pharetra nisi, gravida lacinia ante risus tempor augue.</p>
+
+			<b>Other news - Some interesting project news: 15th June 2017</b>
+			<p>Fusce lectus tellus, vestibulum non molestie vitae, mollis quis metus. Aliquam bibendum interdum lacus, sed pretium ligula. Donec nec enim at eros euismod mollis. Cras nec molestie elit. Morbi eu sapien eget mi tempus suscipit fringilla et felis. Ut sollicitudin a neque placerat iaculis. Curabitur vel rutrum arcu. Duis cursus velit risus, vel tempus elit congue et. Sed auctor justo vel eleifend semper. Morbi laoreet venenatis consequat.</p>
+
+			<b>Other news - 100 subscribers!: 4th June 2017</b>
+			<p>Aliquam a fringilla nisi. Donec volutpat quam elit, non viverra nulla tincidunt vitae. Donec bibendum ut ligula vestibulum viverra. Donec eget laoreet libero, in auctor elit. Vivamus libero purus, auctor et gravida quis, mattis non arcu. Vestibulum lacinia elementum quam eu scelerisque. </p>
+
+			<b>Milestone - Project start: 27th May 2017</b>
+			<p>Suspendisse sagittis, tortor id tempus sodales, justo mi efficitur leo, in sollicitudin mauris massa in dolor. Maecenas arcu eros, consectetur et augue at, gravida consequat enim. Etiam ultricies ex enim, eu vulputate diam placerat ut. Morbi elit nibh, auctor nec metus consequat, laoreet pretium lacus.</p>
+			</p>
+		</div>
 	</div>
 </div>
+
+<div style="clear: both;"></div>
+
+{% if user.is_authenticated %}
+	<h3>Documents</h3>
+	<div class="container">
+		<div class="row-fluid" id="documents">
+		{% for doc in documents %}
+		    <div class="col-md-2" data-colid="{{collection.colId}}" data-docid="{{doc.docId}}" style="text-align: center;"><canvas id="gauge_{{doc.docId}}" width="100" height="100" data-lines="{{doc.docStat.nrOfTranscribedLines}}" data-words="{{doc.docStat.nrOfWords}}"></canvas>
+	<a href="{% url 'edit:correct' collection.colId doc.docId '1' %}" class="thumbnail"><div class="thumb_label">{{doc.title}}</div></a></div>
+		{% endfor %}
+		</div>
+	</div>
+ {% endif %}
 
 {% endblock content %}
