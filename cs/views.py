@@ -20,10 +20,14 @@ def index(request):
 #
 #    cs = CSProject.objects.filter(cs_flag=True).values()
 
-#    t = request.user.tsdata.t 
-    t = TranskribusSession()
+    if request.user.is_authenticated():
+        t = request.user.tsdata.t 
+    else:
+        t = TranskribusSession()
 
-    collections = t.collections(request)
+
+#    collections = t.collections(request)
+#    t_log('collections %s' % collections, logging.WARN)
 
     cs = t.crowdsourcing(request)
 
@@ -34,6 +38,7 @@ def index(request):
 
 
     t_log('c-source %s' % cs, logging.WARN)
+
     if request.user.is_authenticated() : 
         collections = t.collections(request)
         if isinstance(collections,HttpResponse):
@@ -50,12 +55,13 @@ def index(request):
     return render(request, 'cs_available.html', {'cs_list': cs} )
 
 
-@t_login_required
+#@t_login_required
 def collection(request,collId):
 
 #    cs = CSProject.objects.filter(collection_id=collId).values()
 #    t_log('cs %s' % cs, logging.WARN)
 
+    '''
     #Avoid this sort of nonsense if possible
     collections = t.collections(request,{'end':None,'start':None})
     if isinstance(collections,HttpResponse):
@@ -89,8 +95,57 @@ def collection(request,collId):
     combidata = pagedata.copy()
     combidata.update(navdata)
     combidata['documents'] = documents
+    '''
+    if request.user.is_authenticated():
+        t = request.user.tsdata.t 
+    else:
+        t = TranskribusSession()
 
-    return render(request, 'collection.html', combidata )
+    cs = t.crowdsourcing(request)
+    collection = None
+    for c in cs :
+        if int(c.get('colId')) == int(collId) :
+            collection = c
+
+
+    if request.user.is_authenticated():
+        t = request.user.tsdata.t 
+
+        #Avoid this sort of nonsense if possible
+        collections = t.collections(request,{'end':None,'start':None})
+        if isinstance(collections,HttpResponse):
+            return collections
+
+        navdata = navigation.get_nav(collections,collId,'colId','colName')
+        #if we didn't have a focus before navigation call, we'll have one after
+        collection = navdata.get("focus")
+        pagedata = {'collection': collection}
+
+    #    t_log('USER: %s' % request.user.tsdata, logging.WARN)
+
+        documents = t.collection(request,{'collId' : collId})
+        if isinstance(documents,HttpResponse):
+            return documents
+
+        t_log('DOCS:: %s' % documents, logging.WARN)
+
+        for d in documents :
+            d['docStat'] =  t.docStat(request, {'collId': collId, 'docId': d.get('docId')})
+
+    #    cs = t_crowdsourcing_unsubscribe(request,{'collId' : collId})
+        #TODO  catch status code from this
+        #TODO don;t call when not needed (ie logged in an user is subscribed... though calling this may be the easiest way)
+       # t.crowdsourcing_subscribe(request,{'collId' : collId})
+
+        #merge the dictionaries
+        combidata = pagedata.copy()
+        combidata.update(navdata)
+        combidata['documents'] = documents
+        return render(request, 'collection.html', combidata )
+    else:
+
+        return render(request, 'collection.html', {'collection': collection} )
+
 
 @t_login_required
 def document(request,colId,docId):
