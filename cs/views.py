@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 
 from cs.models import CSProject
 
-from apps.utils.decorators import t_login_required#, t_login_required_ajax
+from apps.utils.decorators import t_login_required, t_login_required_ajax
 from apps.utils.utils import t_log
 from apps.utils.forms import RegisterForm
 from apps.utils.services import *
@@ -15,138 +15,113 @@ from apps.navigation import navigation
 import logging # only for log levels
 
 def index(request):
-#    for cs in CSProject.objects.filter(cs_flag=True).values(): #not sure when this flag would be false...
-#        t_log('cs %s' % cs, logging.WARN)
-#
-#    cs = CSProject.objects.filter(cs_flag=True).values()
 
     if request.user.is_authenticated():
         t = request.user.tsdata.t 
     else:
         t = TranskribusSession()
 
-
-#    collections = t.collections(request)
-#    t_log('collections %s' % collections, logging.WARN)
-
     cs = t.crowdsourcing(request)
 
     if isinstance(cs,HttpResponse):
-        return cs
+        return apps.utils.views.error_view(request,cs)
 
-#    docStat = t.docStat(request, {'collId': collId, 'docId': docId})
-
-
-    t_log('c-source %s' % cs, logging.WARN)
+    #t_log('c-source %s' % cs, logging.WARN)
 
     if request.user.is_authenticated() : 
-        collections = t.collections(request)
+        collections = t.collections(request,params=None,ignore_cache=True)
         if isinstance(collections,HttpResponse):
-            return collections
+            return apps.utils.views.error_view(request,collections)
 
         t_log('collections %s' % collections, logging.WARN)
         for f in cs :
-            f['colStat'] =  t.collStat(request, {'collId': f.get('colId')})
+            f['subscribed'] = 0
             for c in collections :
                 if f.get('colId') == c.get('colId'):
                     f['subscribed'] = 1
+                    f['colStat'] =  t.collStat(request, {'collId': f.get('colId')})
 
-#    return render(request, 'cs_available.html', {'cs_list': cs_list} )
     return render(request, 'cs_available.html', {'cs_list': cs} )
 
 
-#@t_login_required
 def collection(request,collId):
 
-#    cs = CSProject.objects.filter(collection_id=collId).values()
-#    t_log('cs %s' % cs, logging.WARN)
-
-    '''
-    #Avoid this sort of nonsense if possible
-    collections = t.collections(request,{'end':None,'start':None})
-    if isinstance(collections,HttpResponse):
-        return collections
-
-    navdata = navigation.get_nav(collections,collId,'colId','colName')
-    #if we didn't have a focus before navigation call, we'll have one after
-    collection = navdata.get("focus")
-    pagedata = {'collection': collection}
-
-#    t_log('USER: %s' % request.user.tsdata, logging.WARN)
-
-    documents = t.collection(request,{'collId' : collId})
-    if isinstance(documents,HttpResponse):
-        return documents
-
-    t_log('DOCS:: %s' % documents, logging.WARN)
-
-    for d in documents :
-        d['docStat'] =  t.docStat(request, {'collId': collId, 'docId': d.get('docId')})
-
-#    cs = t_crowdsourcing_unsubscribe(request,{'collId' : collId})
-    #TODO  catch status code from this
-    #TODO don;t call when not needed (ie logged in an user is subscribed... though calling this may be the easiest way)
-    t.crowdsourcing_subscribe(request,{'collId' : collId})
-   # if isinstance(cs,HttpResponse):
-    #    return cs
-#    t_log('c-source %s' % c_source, logging.WARN)
-
-    #merge the dictionaries
-    combidata = pagedata.copy()
-    combidata.update(navdata)
-    combidata['documents'] = documents
-    '''
     if request.user.is_authenticated():
         t = request.user.tsdata.t 
     else:
         t = TranskribusSession()
 
     cs = t.crowdsourcing(request)
+    if isinstance(cs,HttpResponse):
+        return apps.utils.views.error_view(request,cs)
+
     collection = None
     for c in cs :
         if int(c.get('colId')) == int(collId) :
             collection = c
 
+    navdata = navigation.get_nav(cs,collId,'colId','colName')
+    pagedata = {'collection': collection}
+    combidata = pagedata.copy()
+    combidata.update(navdata)
 
+    collection['subscribed'] = 0
+
+    #We are logged in...
     if request.user.is_authenticated():
         t = request.user.tsdata.t 
 
-        #Avoid this sort of nonsense if possible
-        collections = t.collections(request,{'end':None,'start':None})
+        #Get the user collections
+        collections = t.collections(request,{'end':None,'start':None},ignore_cache=True)
         if isinstance(collections,HttpResponse):
-            return collections
-
-        navdata = navigation.get_nav(collections,collId,'colId','colName')
-        #if we didn't have a focus before navigation call, we'll have one after
-        collection = navdata.get("focus")
-        pagedata = {'collection': collection}
-
-    #    t_log('USER: %s' % request.user.tsdata, logging.WARN)
+            return apps.utils.views.error_view(request,collections)
+        #Check to see if the user is subscribed to the CS collection
+        for c in collections :
+            if c.get('colId') == collection.get('colId') :
+                collection['subscribed'] = 1
+                collection['colStat'] =  t.collStat(request, {'collId': c.get('colId')})
+    
+    if collection['subscribed'] :
 
         documents = t.collection(request,{'collId' : collId})
         if isinstance(documents,HttpResponse):
             return documents
 
-        t_log('DOCS:: %s' % documents, logging.WARN)
-
         for d in documents :
             d['docStat'] =  t.docStat(request, {'collId': collId, 'docId': d.get('docId')})
 
-    #    cs = t_crowdsourcing_unsubscribe(request,{'collId' : collId})
-        #TODO  catch status code from this
-        #TODO don;t call when not needed (ie logged in an user is subscribed... though calling this may be the easiest way)
-       # t.crowdsourcing_subscribe(request,{'collId' : collId})
-
         #merge the dictionaries
-        combidata = pagedata.copy()
-        combidata.update(navdata)
         combidata['documents'] = documents
-        return render(request, 'collection.html', combidata )
-    else:
 
-        return render(request, 'collection.html', {'collection': collection} )
+    return render(request, 'collection.html', combidata )
 
+@t_login_required_ajax
+def subscribe(request,collId):
+    if request.user.is_authenticated():
+        t = request.user.tsdata.t 
 
+    response = t.crowdsourcing_subscribe(request,{'collId' : collId})
+    if isinstance(response,HttpResponse):
+        return response
+
+    return JsonResponse({
+            'response': response,
+        },safe=False)
+ 
+
+@t_login_required_ajax
+def unsubscribe(request,collId):
+    if request.user.is_authenticated():
+        t = request.user.tsdata.t 
+
+    response = t.crowdsourcing_unsubscribe(request,{'collId' : collId})
+    if isinstance(response,HttpResponse):
+        return response
+
+    return JsonResponse({
+            'response': response,
+        },safe=False)
+ 
 @t_login_required
 def document(request,colId,docId):
     return render(request, 'pages/about.html')

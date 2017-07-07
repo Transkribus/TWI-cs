@@ -21,13 +21,21 @@ import cs.views
 
 urlpatterns = [
     ## Project pages for Crowd sourcing ##
-    url(r'^$', cs.views.index, name='index'),
+    #statics
     url(r'^about$', cs.views.about, name='about'),
 
+    #index (list of collections avaialble for crowd subscription
+    url(r'^$', cs.views.index, name='index'),
+    #colleciton
     url(r'^([0-9]+)$', cs.views.collection, name='collection'),
+    #document
     url(r'^([0-9]+)/([0-9]+)$', cs.views.document, name='document'),
 
+    #subscription (via ajax)
+    url(r'^subscribe/([0-9]+)$', cs.views.subscribe, name='collection'),
+    url(r'^unsubscribe/([0-9]+)$', cs.views.unsubscribe, name='collection'),
 
+    #??
     url(r'^utils/', include('apps.utils.urls', app_name='utils', namespace='utils')),
     url(r'^edit/', include('apps.edit.urls', app_name='edit', namespace='edit')),
 

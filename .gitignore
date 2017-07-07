@@ -5,3 +5,4 @@ cs/settings/local.py
 tmp/db.sqlite3
 cs/migrations
 collected_static
+cs/logfile*

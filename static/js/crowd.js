@@ -14,7 +14,44 @@ console.log("SERVERBASE: ",serverbase);
 $(document).ready(function(){
 
 	init_thumbs();
+	init_subscription();
 });
+
+function init_subscription(){
+
+	$("#subscribe").on("click", function(){
+		var colId = $(this).data("colid");
+		var subs_url = make_url("/subscribe/"+colId);
+		var link=this;
+		console.log("SUBS_URL:",subs_url);
+		$.getJSON(subs_url, function(response){
+			$("#unsubscribe").removeClass("hide").show();
+			$(link).hide();
+		}).done(function(a,b) {
+		    console.log( "Done: ",a, " ",b );
+		}).fail(function( a, b){
+		    console.log( "Fail: ",a, " ",b );
+		});
+		return false;
+	});
+
+	$("#unsubscribe").on("click", function(){
+		var colId = $(this).data("colid");
+		var unsubs_url = make_url("/unsubscribe/"+colId);
+		var link=this;
+		console.log("UNSUBS_URL:",unsubs_url);
+		$.getJSON(unsubs_url, function(response){
+			$("#subscribe").removeClass("hide").show();
+			$(link).hide();
+		}).done(function(a,b) {
+		    console.log( "Done: ",a, " ",b );
+		}).fail(function( a, b){
+		    console.log( "Fail: ",a, " ",b );
+		});
+		return false;
+	});
+
+}
 
 function init_thumbs(){
 

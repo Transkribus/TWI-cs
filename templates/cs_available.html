@@ -11,7 +11,7 @@
 	{% for cs in cs_list %}
 		<div class="col-md-2" data-colid="{{cs.colId}}" style="text-align: center;">
 		{% if user.is_authenticated %}
-	    		<canvas id="gauge_{{cs.colId}}" width="100" height="100" data-lines="{{cs.colStat.nrOfTranscribedLines}}" data-words="{{cs.colStat.nrOfWords}}"></canvas> 
+	    <!--		<canvas id="gauge_{{cs.colId}}" width="100" height="100" data-lines="{{cs.colStat.nrOfTranscribedLines}}" data-words="{{cs.colStat.nrOfWords}}"></canvas> -->
 		{% endif %}
 		<a href="{{cs.colId}}" class="thumbnail {%if cs.subscribed%} cs-subscribed{%endif%}"><div class="thumb_label">{{cs.colName}}</div></a>
 		There {% if cs.nrOfDocuments > 1 %} are {% else %} is {% endif %} {{cs.nrOfDocuments}} document{% if cs.nrOfDocuments > 1 %}s{% endif %} available for transcription, correction or tagging.
