@@ -66,7 +66,7 @@ function init_thumbs(){
 		}).fail(function( a, b){
 		    console.log( "Fail: ",a, " ",b );
 		var wolpertinger_url = make_url("/static/images/wolpertinger.jpg");
-		    $("a", div).prepend('<img src="'+wolpertinger_url+"/>');
+		    $("a", div).prepend('<img src="'+wolpertinger_url+'"/>');
 
 		});
 		//a little nonsense until we have the  total lines figure... then use that rather than the number of words
