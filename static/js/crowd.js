@@ -58,14 +58,16 @@ function init_thumbs(){
 	$("#collections > div").each(function(){
 		var div = this;
 		colId = $(this).data("colid");
-		thumb_url = make_url("/utils/thumb/"+colId);
+		//thumb_url = make_url("/utils/thumb/"+colId);
+		thumb_url = appbase+"/utils/thumb/"+colId;
+
 		$.getJSON(thumb_url, function(thumb_data){
 			$("a", div).prepend('<img src="'+thumb_data.url+'"/>');
 		}).done(function(a,b) {
 		    console.log( "Done: ",a, " ",b );
 		}).fail(function( a, b){
 		    console.log( "Fail: ",a, " ",b );
-		var wolpertinger_url = make_url("/static/images/wolpertinger.jpg");
+		var wolpertinger_url = appbase+"/static/images/wolpertinger.jpg";
 		    $("a", div).prepend('<img src="'+wolpertinger_url+'"/>');
 
 		});
@@ -88,7 +90,9 @@ function init_thumbs(){
 		colId = $(this).data("colid");
 		docId = $(this).data("docid");
 		console.log("COLID: ",colId);
-		thumb_url = make_url("/utils/thumb/"+colId+"/"+docId);
+//		thumb_url = make_url("/utils/thumb/"+colId+"/"+docId);
+		thumb_url = appbase+"/utils/thumb/"+colId+"/"+docId;
+
 		$.getJSON(thumb_url, function(thumb_data){
 			$("a", div).prepend('<img src="'+thumb_data.url+'"/>');
 		}).done(function(a,b) {
