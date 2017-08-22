@@ -28,11 +28,15 @@
 						<a href="#" id="unsubscribe" data-colId="{{collection.colId}}" class="{% if not collection.subscribed %}hide{%endif%}">Unsubscribe from this project</a>
 					{% endif %}
 				
-				<h4>Project schedule</h4>
-				<b>Milestone - Project start: 27th May 2017</b>
-				<p>Suspendisse sagittis, tortor id tempus sodales, justo mi efficitur leo, in sollicitudin mauris massa in dolor. Maecenas arcu eros, consectetur et augue at, gravida consequat enim. Etiam ultricies ex enim, eu vulputate diam placerat ut. Morbi elit nibh, auctor nec metus consequat, laoreet pretium lacus.</p>
-				 <b>Milestone - transcription complete: 30th June 2017</b>
-				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget eros at odio pretium pharetra a id ligula. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aenean volutpat, nisi quis feugiat feugiat, enim augue pharetra nisi, gravida lacinia ante risus tempor augue.</p>
+				<h3>Project schedule</h3>
+				<b>Project aim</b>
+				<p>{{collection.crowdProject.aim}}</p>
+
+				{% for ms in collection.crowdProject.milestoneList.crowdProjectMilestones %}
+				<h4>Milestone - {{ms.title}} ({{ms.date|str_to_date|date:"jS F Y"}})</h4>
+				<p><b>Due date</b> : {{ ms.dueDate|str_to_date|date:"jS F Y"}} </p>
+				<p>{{ms.description}}</p>	
+				{% endfor %}
 				
 			</div>
 		</div>
@@ -40,18 +44,13 @@
 	<div class="row col-md-4">
 		<div class="inner">
 			<h4>Project News</h4>
-			 <b>Milstone - transcription complete: 30th June 2017</b>
-			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget eros at odio pretium pharetra a id ligula. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aenean volutpat, nisi quis feugiat feugiat, enim augue pharetra nisi, gravida lacinia ante risus tempor augue.</p>
+			
+			{% for ms in collection.crowdProject.messageList.crowdProjectMessages %}
+			<b>{{ms.subject}} ({{ms.date|str_to_date|date:"jS F Y"}})</b>
+			<p>{{ms.message}}</p>	
+			{% endfor %}
 
-			<b>Other news - Some interesting project news: 15th June 2017</b>
-			<p>Fusce lectus tellus, vestibulum non molestie vitae, mollis quis metus. Aliquam bibendum interdum lacus, sed pretium ligula. Donec nec enim at eros euismod mollis. Cras nec molestie elit. Morbi eu sapien eget mi tempus suscipit fringilla et felis. Ut sollicitudin a neque placerat iaculis. Curabitur vel rutrum arcu. Duis cursus velit risus, vel tempus elit congue et. Sed auctor justo vel eleifend semper. Morbi laoreet venenatis consequat.</p>
-
-			<b>Other news - 100 subscribers!: 4th June 2017</b>
-			<p>Aliquam a fringilla nisi. Donec volutpat quam elit, non viverra nulla tincidunt vitae. Donec bibendum ut ligula vestibulum viverra. Donec eget laoreet libero, in auctor elit. Vivamus libero purus, auctor et gravida quis, mattis non arcu. Vestibulum lacinia elementum quam eu scelerisque. </p>
-
-			<b>Milestone - Project start: 27th May 2017</b>
-			<p>Suspendisse sagittis, tortor id tempus sodales, justo mi efficitur leo, in sollicitudin mauris massa in dolor. Maecenas arcu eros, consectetur et augue at, gravida consequat enim. Etiam ultricies ex enim, eu vulputate diam placerat ut. Morbi elit nibh, auctor nec metus consequat, laoreet pretium lacus.</p>
-			</p>
+		</p>
 		</div>
 	</div>
 </div>
