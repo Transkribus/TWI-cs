@@ -30,14 +30,14 @@ LOGGING = {
         },
     },
     'handlers': {
-        'logfile': {
-            'level': 'WARN',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': BASE_DIR + "/logfile",
-            'maxBytes': 50000,
-            'backupCount': 2,
-            'formatter': 'request',
-        },
+#        'logfile': {
+#            'level': 'WARN',
+#            'class': 'logging.handlers.RotatingFileHandler',
+#            'filename': BASE_DIR + "/logfile",
+#            'maxBytes': 50000,
+#            'backupCount': 2,
+#            'formatter': 'request',
+#        },
         'console': {
             'class': 'logging.StreamHandler',
             'formatter' : 'request',
@@ -45,7 +45,7 @@ LOGGING = {
     },
     'loggers': {
         'django': {
-            'handlers': ['console', 'logfile'],
+            'handlers': ['console'],# 'logfile'],
             'level': os.getenv('DJANGO_LOG_LEVEL', 'WARN'), #change this for more or fewer log messages
         },
     },
