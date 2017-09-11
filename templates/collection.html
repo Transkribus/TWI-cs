@@ -27,29 +27,31 @@
 						<a href="#" id="subscribe" data-colId="{{collection.colId}}" class="{% if collection.subscribed %}hide{%endif%}">Subscribe to this project</a>
 						<a href="#" id="unsubscribe" data-colId="{{collection.colId}}" class="{% if not collection.subscribed %}hide{%endif%}">Unsubscribe from this project</a>
 					{% endif %}
-				
-				<h3>Project schedule</h3>
-				<b>Project aim</b>
-				<p>{{collection.crowdProject.aim}}</p>
+				{% if collection.crowdProject %}	
+					<h3>{% trans 'Project schedule' %}</h3>
+					<b>{% trans 'Project aim' %}</b>
+					<p>{{collection.crowdProject.aim}}</p>
 
-				{% for ms in collection.crowdProject.milestoneList.crowdProjectMilestones %}
-				<h4>Milestone - {{ms.title}} ({{ms.date|str_to_date|date:"jS F Y"}})</h4>
-				<p><b>Due date</b> : {{ ms.dueDate|str_to_date|date:"jS F Y"}} </p>
-				<p>{{ms.description}}</p>	
-				{% endfor %}
-				
+					{% for ms in collection.crowdProject.milestoneList.crowdProjectMilestones %}
+					<h4>{% trans 'Milestone' %} - {{ms.title}} ({{ms.date|str_to_date|date:"jS F Y"}})</h4>
+					<p><b>{% trans 'Due date' %}</b> : {{ ms.dueDate|str_to_date|date:"jS F Y"}} </p>
+					<p>{{ms.description}}</p>	
+					{% endfor %}
+				{% endif %}	
 			</div>
 		</div>
 	</div>
 	<div class="row col-md-4">
 		<div class="inner">
 			<h4>Project News</h4>
-			
-			{% for ms in collection.crowdProject.messageList.crowdProjectMessages %}
-			<b>{{ms.subject}} ({{ms.date|str_to_date|date:"jS F Y"}})</b>
-			<p>{{ms.message}}</p>	
-			{% endfor %}
-
+			{% if collection.crowdProject %}	
+				{% for ms in collection.crowdProject.messageList.crowdProjectMessages %}
+				<b>{{ms.subject}} ({{ms.date|str_to_date|date:"jS F Y"}})</b>
+				<p>{{ms.message}}</p>	
+				{% endfor %}
+			{% else %}
+				<p>{% trans 'No news items for this collection'}.</p>
+			{% endif %}
 		</p>
 		</div>
 	</div>

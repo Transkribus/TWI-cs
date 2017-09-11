@@ -61,10 +61,10 @@ def collection(request,collId):
             collection = c
 
     #Sort the messages by date (oldest first) 
-    collection.get("crowdProject").get("messageList").get("crowdProjectMessages").sort(key=lambda item:item['date'], reverse=False)
-
-    #Sort the milestones by date (oldest first) 
-    collection.get("crowdProject").get("milestoneList").get("crowdProjectMilestones").sort(key=lambda item:item['date'], reverse=False)
+    if collection.get("crowdProject") is not None :
+        collection.get("crowdProject").get("messageList").get("crowdProjectMessages").sort(key=lambda item:item['date'], reverse=False)
+        #Sort the milestones by date (oldest first) 
+        collection.get("crowdProject").get("milestoneList").get("crowdProjectMilestones").sort(key=lambda item:item['date'], reverse=False)
 
     navdata = navigation.get_nav(cs,collId,'colId','colName')
     pagedata = {'collection': collection}
