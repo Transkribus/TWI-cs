@@ -1,5 +1,6 @@
 {% extends "navi_base.html" %}
 {% load i18n %}
+{% load staticfiles %}
 
 {% block content %}
 <div class="container read-container">
@@ -11,10 +12,10 @@
 			<div class="inner">
 			{% if collection.subscribed %}
 			<!--	<img src="{{collection.main_image}}" style="float: left;"/> -->
-				<img src="/static/images/wolpertinger.jpg"/>
+				<img src="{% static 'images/wolpertinger.jpg' %}"/>
 
 			{% else %}
-				<img src="/static/images/wolpertinger.jpg"/>
+				<img src="{% static 'images/wolpertinger.jpg' %}"/>
 			{% endif %}
 			</div>
 		</div>
