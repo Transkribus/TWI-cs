@@ -36,6 +36,7 @@ urlpatterns = [
     url(r'^unsubscribe/([0-9]+)$', cs.views.unsubscribe, name='collection'),
 
     # other apps
+    url(r'^view/', include('apps.edit.urls', app_name='edit', namespace='edit')),
     url(r'^edit/', include('apps.edit.urls', app_name='edit', namespace='edit')),
     url(r'^utils/', include('apps.utils.urls', app_name='utils', namespace='utils')),
 
