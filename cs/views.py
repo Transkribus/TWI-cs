@@ -11,6 +11,7 @@ from apps.utils.utils import t_log
 from apps.utils.forms import RegisterForm
 from apps.utils.services import *
 from apps.navigation import navigation
+from apps.utils.views import *
 
 import logging # only for log levels
 
@@ -31,7 +32,9 @@ def index(request):
     if request.user.is_authenticated() : 
         collections = t.collections(request,params=None,ignore_cache=True)
         if isinstance(collections,HttpResponse):
+            return error_view(request,collections)
             return apps.utils.views.error_view(request,collections)
+
 
         t_log('collections %s' % collections, logging.WARN)
         for f in cs :
@@ -41,7 +44,9 @@ def index(request):
                     f['subscribed'] = 1
                     f['colStat'] =  t.collStat(request, {'collId': f.get('colId')})
 
-    return render(request, 'cs_available.html', {'cs_list': cs} )
+#    return render(request, 'cs_available.html', {'cs_list': cs} )
+    return render(request, 'collections.html', {'cs_list': cs} )
+
 
 
 def collection(request,collId):
