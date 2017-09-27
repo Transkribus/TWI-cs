@@ -58,7 +58,7 @@ def collection(request,collId):
 
     cs = t.crowdsourcing(request)
     if isinstance(cs,HttpResponse):
-        return apps.utils.views.error_view(request,cs)
+        return error_view(request,cs)
 
     collection = None
     for c in cs :
@@ -85,7 +85,7 @@ def collection(request,collId):
         #Get the user collections
         collections = t.collections(request,{'end':None,'start':None},ignore_cache=True)
         if isinstance(collections,HttpResponse):
-            return apps.utils.views.error_view(request,collections)
+            return error_view(request,collections)
         #Check to see if the user is subscribed to the CS collection
         for c in collections :
             if c.get('colId') == collection.get('colId') :
