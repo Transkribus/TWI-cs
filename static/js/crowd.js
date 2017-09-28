@@ -8,6 +8,9 @@ var appbase = window.location.pathname.replace(/\/\d+(|\/)/g, "");
 // remove from the back nothing after word that *should* == appname and anything after it (to get server base)
 var serverbase = window.location.pathname.replace(/\/\w+(|\/|\/\d.*)$/g, ""); 
 
+//crowdsourcing is project root
+var serverbase = appbase;
+
 console.log("APPBASE: ",appbase);
 console.log("SERVERBASE: ",serverbase);
 

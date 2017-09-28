@@ -25,7 +25,7 @@ def index(request):
     cs = t.crowdsourcing(request)
 
     if isinstance(cs,HttpResponse):
-        return apps.utils.views.error_view(request,cs)
+        return error_view(request,cs)
 
     #t_log('c-source %s' % cs, logging.WARN)
 
@@ -33,7 +33,6 @@ def index(request):
         collections = t.collections(request,params=None,ignore_cache=True)
         if isinstance(collections,HttpResponse):
             return error_view(request,collections)
-            return apps.utils.views.error_view(request,collections)
 
 
         t_log('collections %s' % collections, logging.WARN)
