@@ -31,8 +31,8 @@ class Command(BaseCommand):
 
 #            username = input('Username: ')
 #            password = getpass.getpass('Password: ')
-            username = 'rory.mcnicholl@gmail.com'
-            password = 'obd703MR'
+            username = 'email@example.com'
+            password = '########'
             user = services.t_login(username,password)
             #print('user: %s' % user)
 
